@@ -1,0 +1,57 @@
+/*C1. Hình chữ nhật lớn nhất (Bản dễ)
+time limit per test1 second
+memory limit per test256 megabytes
+inputstandard input
+outputstandard output
+
+Đây là phiên bản dễ của bài toán. Bản khó sẽ có thêm yêu cầu, vì vậy cùng một solution sẽ không thể AC cả hai bài.
+
+Một biểu đồ cột được biểu diễn bởi mảng a gồm n phần tử. Phần tử ai biểu thị độ cao của cột thứ i trong biểu đồ.
+Hãy tính diện tích hình chữ nhật lớn nhất có thể được tạo bởi các cột của biểu đồ
+
+Input
+Dòng đầu tiên nhập số bộ test t (1≤t≤100).
+Dòng đầu mỗi test nhập một số nguyên n (1≤n≤2⋅105).
+Dòng thứ hai mỗi test nhập n số nguyên của ai của mảng (1≤ai≤109).
+Tổng n ở tất cả test case đảm bảo không vượt quá 2⋅105.
+
+Output
+In kết quả mỗi test trên một dòng. */
+
+
+#include <iostream>
+#include <stack>
+#include <vector>
+
+using namespace std;
+
+int main() {
+	ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<int> heights(n);
+        for (int i = 0; i < n; ++i) {
+            cin >> heights[i];
+        }
+        stack<int> s;
+	    long long m = 0;
+	    int x = heights.size();
+	    for (int i = 0; i <= x; ++i) {
+	        while (!s.empty() && (i == x || heights[i] < heights[s.top()])) {
+	            int h = heights[s.top()];
+	            s.pop();
+	            int w = s.empty() ? i : i - s.top() - 1;
+	            m = max(m, (long long)h * w);
+	        }
+	        s.push(i);
+	    }
+        cout << m << endl;
+    }
+
+    return 0;
+}
