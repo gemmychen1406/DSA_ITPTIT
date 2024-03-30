@@ -1,0 +1,65 @@
+/* A. Truy vấn điểm gần nhất
+time limit per test1 second
+memory limit per test256 megabytes
+inputstandard input
+outputstandard output
+
+Cho mảng a gồm nphần tử, cùng với q truy vấn. Mỗi truy vấn chứa một số nguyên x, yêu cầu phải tìm giá trị nhỏ nhất của |ai−x| với mọi 1≤i≤n.
+
+Input
+Dòng đầu nhập hai số nguyên n và q (1≤n,q≤2⋅105).
+Dòng thứ hai nhập n số nguyên ai (1≤ai≤109).
+q dòng tiếp theo, mỗi dòng nhập một số nguyên x (1≤x≤109).
+
+Output
+Với mỗi truy vấn, in ra kết quả trên một dòng. */
+
+#include<iostream>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+    int n, q;
+    cin >> n >> q;
+    int a[n];
+    for (int i = 0; i < n; i++){
+    	cin >> a[i];
+	}
+	sort(a, a + n);
+	while(q--){
+		int x;
+		cin >> x;
+// Code TLE:
+//		int min;
+//		int k = n;
+//		if (x >= a[n - 1]) min = x - a[n - 1];
+//		else if(x <= a[0]) min = a[0] - x;
+//		else{
+//			for (int i = n - 2; i > 0; i--){
+//				if (x >= a[i]){
+//					if ((x - a[i]) > (a[i + 1] - x)) min = a[i + 1] - x;
+//					else min = x - a[i];
+//					break;
+//				}
+//				else if (x <= a[n - i - 1]){
+//					if ((x - a[n - i - 2]) > (a[n - i - 1] - x)) min = a[n - i - 1] - x;
+//					else min = x - a[n - i - 2];
+//					break;
+//				}
+//			}
+//		}
+//		cout << min << endl;
+		int i = lower_bound(a, a + n, x) - a;
+		if (a[i] == x) cout << 0 << endl;
+		else {
+			int m = abs(a[i] - x);
+			if(a[i - 1] != 0) m = min(m, abs(a[i - 1] - x));
+			if(a[i + 1] != 0) m = min(m, abs(a[i + 1] - x));
+			cout << m << endl;
+		}
+	}
+}
