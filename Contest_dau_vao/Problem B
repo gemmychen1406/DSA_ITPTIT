@@ -1,0 +1,55 @@
+/*B. Kích thước lớn nhất
+time limit per test2 seconds
+memory limit per test256 megabytes
+inputstandard input
+outputstandard output
+
+Cho mảng a gồm n phần tử và một số nguyên k. Tìm độ dài lớn nhất mảng con của a sao cho tổng các phần tử trong mảng con này chia hết cho k.
+Input
+Dòng đầu nhập số bộ test t (1≤t≤105).
+Dòng đầu mỗi test nhập hai số nguyên n và k (1≤n≤2⋅105,1≤k≤109).
+Dòng thứ hai mỗi test nhập n số nguyên của mảng a (ai≤109).
+Input đảm bảo tổng n ở tất cả test case không vượt quá 2⋅105.
+
+Output
+In đáp án mỗi test trên một dòng.*/
+
+
+#include <iostream>
+#include <unordered_map>
+#include <cmath>
+
+using namespace std;
+int main(){
+    ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	int t; cin >> t;
+    while(t--){
+        int n, k; cin >> n >> k;
+        int a[n + 1];
+        a[0] = 0;
+        unordered_map<int, int> f;
+        unordered_map<int, int> e;
+        for(int i = 1; i <= n; i++){
+            int x; cin >> x;
+            a[i] = (a[i - 1] + x) % k;
+        }
+        for(int i = 1; i <= n;i++){
+            if(!f.count(a[i])){
+                f[a[i]] = i;
+            }
+            e[a[i]] = i;
+        }
+        int m = 0;
+        for(auto x : f){
+            if(abs(e[x.first] - x.second) > m){
+                m = abs(e[x.first] - x.second); 
+            }
+            if(x.first == 0 && e[x.first] > m) m = e[x.first];
+        }
+        cout << m << endl;
+    }
+    return 0;
+}
+ 
