@@ -1,0 +1,49 @@
+/* Giống C1 nhưng các cột có thể lần lượt đổi chỗ xuống cuối */
+
+
+#include <iostream>
+#include <deque>
+#include <cmath>
+
+using namespace std;
+
+int main() {
+	ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        int f[2*n];
+	    for (int i = 1; i <= n; i++)
+	    {
+	        cin >> f[i];
+	        f[i + n] = f[i];
+	    }
+	    deque<int> dq;
+	    long long a = 0;
+	    dq.push_back(1);
+	    long long h, w;
+	    for (int i = 2; i <= 2 * n + 1; i++)
+	    {
+	        while (!dq.empty() && dq.front() < i - n)
+	            dq.pop_front();
+	        while (!dq.empty() && (f[i] < f[dq.back()] || i > 2 * n))
+	        {
+	            h = f[dq.back()];
+	            dq.pop_back();
+	            w = (i - 1) % n;
+	            if (!dq.empty())
+	                w = (w + n - dq.back()) % n;
+	            if (w == 0)
+	                w = n;
+	            a = max(a, h * w);
+	        }
+	        dq.push_back(i);
+	    }
+	    cout << a << "\n";
+    }
+    return 0;
+}
