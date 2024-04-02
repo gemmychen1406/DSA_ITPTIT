@@ -1,0 +1,83 @@
+/*D. Đếm mảng
+time limit per test2 seconds
+memory limit per test256 megabytes
+inputstandard input
+outputstandard output
+Cho ba số nguyên n, k và x. Hãy tính số lượng mảng a có n phần tử thỏa mãn:1≤ai≤x (1≤i≤n).
+Với mọi i,j (i≤j) sao cho j−i≥k, tích các phần tử ai⋅ai+1⋅ai+2⋅...⋅aj là chẵn.
+Kết quả có thể rất lớn, in ra đáp án với modulo 109+7.
+
+Input
+Dòng đầu nhập số bộ test t (1≤t≤100).
+Mỗi test chứa một dòng duy nhất ba số nguyên n, k và x (0≤k≤n,1≤n≤103,1≤x≤109).
+Tổng n ở tất cả các test đảm bảo không vượt quá 103.
+
+Output
+In ra kết quả mỗi test trên một dòng.
+*/
+/*Key observation: Một mảng con có tích chẵn khi có ít nhất một phần tử là chẵn. Đầu bài tương đương với đếm số mảng sao cho không tồn tại mảng con chứa toàn phần tử lẻ có độ dài vượt quá k.
+Gọi dp(i,j) là số mảng thỏa mãn khi xét đến vị trí i, và vị trí phần tử chẵn gần nhất là j. Đặt odd=⌊n2⌋ và even=⌈n2⌉. Giả sử, ta đang ở trạng thái (i,j), xét 2 trường hợp:
+ai+1 chẵn: trạng thái (i,j) chuyển sang (i+1,i+1). Cụ thể dp(i+1,i+1)+=dp(i,j)⋅even
+ai+1 lẻ: Phải bảo đảm i+1−j≤k trước khi chuyển trạng thái (do mảng con chứa toàn phần tử lẻ không được vượt quá k như kết luận ở trên). Khi đó, trạng thái (i,j) chuyển sang (i+1,j). Cụ thể dp(i+1,j)+=dp(i,j)⋅odd
+Time complexity: O(n2)
+Follow up: Problem này có thể giải với độ phức tạp O(n).*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+
+const int mod = 1e9 + 7;
+
+int add(int a, int b){
+	a += b;
+	if(a >= mod) a -= mod;
+	return a;
+}
+
+int mul(int a, int b){
+	ll res = 1ll * a * b;
+	res %= mod;
+	return res;
+}
+
+void solve(){
+	int n, k, x;
+	cin >> n >> k >> x;
+	
+	int even = x / 2;
+	int odd = x - even;
+
+	vector<vector<int>> dp(n + 1, vector<int>(n + 1));
+	dp[0][0] = 1;
+	
+	for(int i = 0; i < n; ++i){
+		for(int j = 0; j <= i; ++j){
+			// Chan
+			dp[i + 1][i + 1] = add(dp[i + 1][i + 1], mul(dp[i][j], even));
+			// Le
+			if(i + 1 - j <= k)
+				dp[i + 1][j] = add(dp[i + 1][j], mul(dp[i][j], odd));
+		}
+	}	
+
+	int res = 0;
+	for(int i = 0; i <= n; ++i)
+		res = add(res, dp[n][i]);
+	cout << res << '\n';
+}
+
+int main(){
+
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+
+	int t;
+	cin >> t;
+
+	while(t--){
+		solve();
+	}
+
+	return 0;
+}
