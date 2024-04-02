@@ -1,0 +1,28 @@
+/*E1. Tìm đường mở khóa (Bản dễ)
+time limit per test2 seconds
+memory limit per test256 megabytes
+inputstandard input
+outputstandard output
+Đây là phiên bản dễ của bài. Khác biệt duy nhất so với bản khó là điều kiện của k. Trong phiên bản này, cố định k=1
+
+Cho một ma trận n⋅m, biểu diễn ma trận đường đi. Trong đó:
+
+Kí tự . biểu diễn ô hợp lệ có thể đi.
+Kí tự # biểu diễn vật cản, không thể đi qua.
+Các kí tự có dạng chữ cái thường biểu diễn ô có chìa khóa.
+Các kí tự có dạng chữ cái hoa biểu diễn ô có ổ khóa. Muốn mở các ổ khóa này cần phải nhặt chìa khóa có kí tự viết thường tương ứng. Ví dụ nếu ổ khóa là kí tự A thì phải nhặt chia khóa có kí tự a thì mới có thể đi qua.
+Có tất cả k cặp chìa khóa và ổ khóa tương ứng trong ma trận.
+Bạn đang bắt đầu ở ô (1, 1). Tại mỗi bước bạn có thể đi 4 hướng. Nói cách khác nếu đang ở vị trí (x,y) thì bạn có thể đi tới các ô (x−1,y),(x+1,y),(x,y−1),(x,y+1).
+Hãy tính số bước đi ít nhất để có thể mở khóa tất cả các ổ khóa ở trong ma trận.
+Nếu không có đáp án, in ra -1.
+
+Input
+Dòng đầu tiên nhập số lượng test t (1≤t≤10).
+Dòng đầu tiên mỗi test nhập ba số nguyên n, m và k(1≤n,m≤50,k = 1).
+n dòng tiếp theo, mỗi dòng nhập một xâu có độ dài m biểu diễn ma trận.
+
+Output
+In ra đáp án với mỗi test trên một dòng.*/
+/*Sử dụng BFS 2 lần. Lần đầu tiên tìm số bước đi nhỏ nhất để nhặt đi từ vị trí xuất phát đến chìa khóa, coi ổ khóa như một chướng ngại vật. Lần thứ hai tìm số bước đi nhỏ nhất từ đi từ vị trí của chìa khóa đến vị trí của ổ khóa. Đáp án của bài toán là tổng số bước đi của cả 2 lần BFS.
+
+Time complexity: O(n⋅m)*/
