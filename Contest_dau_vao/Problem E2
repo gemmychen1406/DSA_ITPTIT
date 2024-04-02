@@ -1,0 +1,113 @@
+/*E2. Tìm đường mở khóa (Bản khó)
+time limit per test5 seconds
+memory limit per test256 megabytes
+inputstandard input
+outputstandard output
+Đây là phiên bản khó của bài. Khác biệt duy nhất so với bản dễ là điều kiện của k. Trong phiên bản này k≤5
+Cho một ma trận n⋅m, biểu diễn ma trận đường đi. Trong đó:
+
+Kí tự . biểu diễn ô hợp lệ có thể đi.
+Kí tự # biểu diễn vật cản, không thể đi qua.
+Các kí tự có dạng chữ cái thường biểu diễn ô có chìa khóa.
+Các kí tự có dạng chữ cái hoa biểu diễn ô có ổ khóa. Muốn mở các ổ khóa này cần phải nhặt chìa khóa có kí tự viết thường tương ứng. Ví dụ nếu ổ khóa là kí tự A thì phải nhặt chia khóa có kí tự a thì mới có thể đi qua.
+Có tất cả k cặp chìa khóa và ổ khóa tương ứng trong ma trận.
+
+Bạn đang bắt đầu ở ô (1, 1). Tại mỗi bước bạn có thể đi 4 hướng. Nói cách khác nếu đang ở vị trí (x,y) thì bạn có thể đi tới các ô (x−1,y),(x+1,y),(x,y−1),(x,y+1).
+
+Hãy tính số bước đi ít nhất để có thể mở khóa tất cả các ổ khóa ở trong ma trận.
+
+Nếu không có đáp án, in ra -1.
+
+Input
+Dòng đầu tiên nhập số lượng test t (1≤t≤10).
+
+Dòng đầu tiên mỗi test nhập ba số nguyên n, m và k (1≤n,m≤50,k≤5).
+n dòng tiếp theo, mỗi dòng nhập một xâu có độ dài m biểu diễn ma trận.
+
+Output
+In ra đáp án với mỗi test trên một dòng.*/
+/*Gọi dp(i,j,keys,locks) là số bước đi nhỏ nhất để đến được vị trí (i,j), với hai trạng thái là keys và locks. keys ở đây biểu thị trạng thái của những chìa khóa đã nhặt biểu diễn dưới dạng nhị phân (hay người ta còn gọi là mask). Giả sử ta đã nhặt được những chìa khóa có kí tự a,d,e thì biểu diễn nhị phân của keys sẽ là 11001 (nếu ta coi vị trí của chìa khóa và kí tự tương ứng của nó như sau: a→0,b→1,c→2,d→3,e→4). Tương tự, locks sẽ biểu thị trạng thái của những ổ khóa đã được mở.
+
+Chúng ta sử dụng BFS để chuyển trạng thái cho dp. Nếu gặp ô là chìa khóa, bật bit tương ứng với kí tự của chìa khóa đó trong biến keys. Nếu gặp ô là ổ khóa, cần phải đảm bảo bit tương ứng trong keys đã được bật trước khi update locks. BFS kết thúc nếu như tất bit của locks đã được bật, hoặc trả về không tìm thấy đường đi.
+
+Time complexity: O(n⋅m⋅2k+1)*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+
+const int mxN = 105;
+char a[mxN][mxN];
+int dp[mxN][mxN][32][32];
+int dx[4] = {1, -1, 0, 0};
+int dy[4] = {0, 0, 1, -1};
+
+void solve(){
+	int n, m, keys;
+	cin >> n >> m >> keys;
+
+	for(int i = 0; i < n; ++i){
+		for(int j = 0; j < m; ++j){
+			cin >> a[i][j];
+		}
+	}
+
+	for(int i = 0; i < n; ++i)
+		for(int j = 0; j < m; ++j)
+			for(int k = 0; k < (1 << keys); ++k)
+				for(int l = 0; l < (1 << keys); ++l)
+					dp[i][j][k][l] = -1;
+
+	dp[0][0][0][0] = 0;	
+
+	int fullkey = (1 << keys) - 1;
+	queue<vector<int>> q;
+	// x, y, keys, locks
+	q.push({0, 0, 0, 0});	
+	while(q.size()){
+		vector<int> fr = q.front(); q.pop();
+		int x = fr[0], y = fr[1], mask = fr[2], mask2 = fr[3];
+		for(int i = 0; i < 4; ++i){
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+
+			if(nx >= 0 && ny >= 0 && nx < n && ny < m && a[nx][ny] != '#'){
+				int nmask2 = mask2;
+				if(a[nx][ny] >= 'A' && a[nx][ny] <= 'Z'){
+					int ilock = a[nx][ny] - 'A';
+					if(!((1 << ilock) & mask)) continue;
+					nmask2 |= (1 << ilock);
+				}
+				int nmask = mask;
+				if(a[nx][ny] >= 'a' && a[nx][ny] <= 'z'){
+					nmask |= 1 << (a[nx][ny] - 'a');
+				}
+				if(dp[nx][ny][nmask][nmask2] == -1){
+					dp[nx][ny][nmask][nmask2] = dp[x][y][mask][mask2] + 1;
+					q.push({nx, ny, nmask, nmask2});
+				}
+				if(nmask == fullkey && nmask2 == fullkey){
+					cout << dp[nx][ny][nmask][nmask2] << '\n';
+					return;
+				}
+			}		
+		}
+	}
+	cout << -1 << '\n';
+}
+
+int main(){
+
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+
+	int t;
+	cin >> t;
+
+	while(t--){
+		solve();
+	}
+
+	return 0;
+}
