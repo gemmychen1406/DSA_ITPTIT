@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <algorithm>
+using namespace std;
+void vector_copy(vector<int> &target, vector<int> s)
+{
+    for (int i = 0; i < s.size(); i++)
+        target.push_back(s[i]);
+}
+int main () {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int n;
+    cin >> n;
+    string a[10005];
+    string s;
+    map<string, vector<int>> m;
+    for (int i = 0; i < n; i++){
+        cin >> s;
+        a[i] = s;
+        sort(s.begin(), s.end());
+        m[s].push_back(i);
+    }
+    map<string, vector<int>> m2;
+    for (auto &x : m){
+        vector_copy(m2[a[x.second.front()]], x.second);
+    }
+    for (auto &x : m2){
+        for (auto &y : x.second){
+            cout << a[y] << " ";
+        }
+        cout << "\n";
+    }
+    return 0;
+}
