@@ -1,0 +1,41 @@
+#include <iostream>
+#include <cmath>
+#include <set>
+#include <algorithm>
+using namespace std;
+#define inf int(1e9 + 7)
+#define MOD int(1e9 + 7)
+long long check(int i, long long a[], long long b[], int n){
+	int pos = lower_bound(a, a + n, b[i]) - a;
+    long long ans1 = pos == 0 ? inf : abs(b[i] - a[pos - 1]);
+    long long ans2 = pos == n ? inf : abs(b[i] - a[pos]);
+    return min(ans1, ans2);
+}
+int main () {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int t;
+	cin >> t;
+	while(t--){
+		int n;
+		cin >> n;
+		long long a[n], b[n], c[n];
+		for (int i = 0; i < n; i++){
+			cin >> a[i];
+		}
+		long long sum = 0;
+		for (int i = 0; i < n; i++){
+			cin >> b[i];
+			c[i] = abs(b[i] - a[i]);
+			sum = sum + c[i] % MOD;
+		}
+		sort(a, a + n);
+		long long  m = 0;
+		for (int i = 0; i < n; i++){
+			m =  max(m, c[i] - check(i, a, b, n));
+		}
+		cout << (sum - m) % MOD <<  endl;
+	}//O(t*n*log(n))
+    return 0;
+}
