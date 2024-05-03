@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+long long n, ans;
+
+void Try(long long x, int sl4, int sl7){
+    if (x >= n && sl4 == sl7 && (x < ans || ans == 0))
+        ans = x;
+    if (x < n * 100){
+        Try(10 * x + 4, sl4 + 1, sl7);
+        Try(10 * x + 7, sl4, sl7 + 1);
+    }
+}
+int main()
+{
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL); 
+	cout.tie(NULL);
+    cin >> n;
+    Try(0, 0, 0);
+    cout << ans;
+    return 0;
+}
