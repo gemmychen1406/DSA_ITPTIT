@@ -1,0 +1,27 @@
+#include <iostream>
+using namespace std;
+
+string s = "";
+int cnt = 0;
+
+void Try(string s, int open, int close){
+    if (!(open | close)){
+        cout << s << "\n";
+        cnt++;
+    }
+    if (open > 0)
+        Try( s + '(', open - 1, close);
+    if (close > open)
+        Try( s + ')', open, close - 1);
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+	cout.tie(NULL);
+    int n;
+    cin >> n;
+    Try(s, n / 2, n / 2);
+    cout << cnt;
+    return 0;
+}
