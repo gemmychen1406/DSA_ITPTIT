@@ -1,0 +1,20 @@
+#include<iostream>
+ 
+using namespace std;
+int cnt = 1;
+void Try(long long n, long long k){
+	if ((n - k) > 0 && (n - k)%2 == 0){
+		cnt++;
+		Try((n - k) / 2, k);
+		Try((n + k) / 2, k);
+	}
+	return;
+}
+ 
+int main() {
+    int n, k;
+    cin >> n >> k;
+	Try(n, k);
+	cout << cnt;
+    return 0;
+}
