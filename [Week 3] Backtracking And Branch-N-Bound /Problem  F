@@ -1,0 +1,34 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int a[50] = {1};
+int n, m;
+int cnt = 0;
+int ans[50];
+
+void Try(int i, int M){
+    if (i == n + 1 && M == 0){
+        cnt++;
+        memcpy(ans, a, sizeof(a));
+        return;
+    }
+    if (i == n + 1 || M == 0)
+        return;
+    for (int j = a[i - 1]; j <= M; j++){
+        a[i] = j;
+        Try(i + 1, M - j);
+    }
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cin >> n >> m;
+    Try(1, m);
+    cout << cnt << "\n";
+    for (int i = n; i > 0; i--)
+        cout << ans[i] << " ";
+    return 0;
+}
