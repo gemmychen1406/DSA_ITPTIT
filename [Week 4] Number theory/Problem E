@@ -1,0 +1,30 @@
+#include<iostream>
+ 
+using namespace std;
+long long mod = 1e9 + 7;
+long long Pow(long long a, long long b, long long mod){
+	if (b == 1) return a % mod;
+	long long ans = 1;
+	while(b > 0){
+		if (b % 2) ans = ans * a % mod;
+		a = a * a % mod;
+		b /= 2;
+	}
+	return ans;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int t;
+	cin >> t;
+	while(t--){
+		long long x;
+		cin >> x;
+		long long c = x/ 2;
+		long long l = x - c; 
+		cout << Pow(4, c, mod) * Pow(5, l, mod) % mod << "\n";
+	}
+	
+	return 0;
+}
