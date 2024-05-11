@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int a[20000005];
+int b[20000005];
+void sang(){
+	int h = 0;
+	for (int i = 2; i < 10000005; i++) b[i] = 1;
+	b[0] = b[1] = 0;
+	for (int i = 2; i * i <= 10000005; i++){
+		if (b[i]){
+			for (int j = i * i; j < 10000005; j+= i) b[j] = 0;
+		}
+	}
+	for (int i = 2; i * i <= 10527450; i++){
+		if (b[i]){
+			for (int j = i * i; j < 10527450; j+= i){
+				int x = j / i;
+				if (b[x] && x != i) {
+					a[h] = j;
+					h++;
+				}
+			}
+		}
+	}
+	//cout << h << "\n";
+	sort(a, a + h);
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	sang();
+	int t;
+	cin >> t;
+	while(t--){
+		int n;
+		cin >> n;
+		cout << a[n-1] << "\n";
+	}
+	return 0;
+}
