@@ -1,0 +1,29 @@
+#include <iostream>
+ 
+using namespace std;
+int b[1000001];
+void sang(){
+	for (int i = 2; i < 1000001; i++) b[i] = 1;
+	b[0] = b[1] = 0;
+	for (int i = 2; i * i <= 1000001; i++){
+		if (b[i]){
+			for (int j = i * i; j < 1000001; j+= i) b[j] = 0;
+		}
+	}
+}
+ 
+int main () {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	sang();
+	int t;
+	cin >> t;
+	while(t--){
+		int x;
+		cin >> x;
+		if (b[x]) cout << "YES\n";
+		else cout << "NO\n";
+	}
+    return 0;
+}
