@@ -1,0 +1,27 @@
+#include<iostream>
+using namespace std;
+long long mod = 1e9 + 7;
+// long long mul(long long a, long long b, long long mod){
+// 	if (b == 0) return 0;
+// 	long long x = mul(a, b/2, mod);
+// 	if (b % 2) return (x + x + a) % mod;
+// 	else return (x + x) % mod;
+// }
+long long pow(long long a, long long b, long long mod){
+	long long ans = 1;
+	while(b > 0){
+		if (b%2) ans = ans * a % mod;
+		a = a * a % mod;
+		b /= 2;
+	}
+	return ans;
+}
+ 
+int main() {
+	long long n, m, t;
+	cin >> t;
+	while(t--){
+		cin >> n >> m;
+		cout << pow(n, m, mod) << "\n";
+	}
+}
