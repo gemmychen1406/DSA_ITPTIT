@@ -1,0 +1,23 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int main(){
+	int n, k;
+	cin >> n >> k;
+	long long a[n];
+	for (int i = 0; i < n; i++){
+		cin >> a[i];
+	}
+	sort(a + 1, a + n);
+	long long sum = a[0]; //cout << a[0];
+	for (int i = 1; i <= n - 1 - k; i++){
+		sum -= a[i];
+		//cout << "-" << a[i];
+	}
+	for (int i = n - k; i < n; i++){
+		sum += a[i];
+		//cout << "+" << a[i];
+	}
+	cout << sum;
+}
