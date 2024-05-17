@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+int a[50005];
+void sang(){
+	for (int i = 2; i < 50005; i++) a[i] = 1;
+	a[0] = a[1] = 0;
+	for (int i = 2; i * i < 50005; i++){
+		if (a[i]){
+			for (int j = i * i; j < 50005; j += i) a[j] = 0;
+		}
+	}
+}
+int main(){
+	sang();
+	int t;
+	cin >> t;
+	while(t--){
+		int d;
+		cin >> d;
+		int i = d + 1;
+		while(a[i] != 1){
+			i++;
+		}
+		int ans = i;
+		i += d;
+		while(a[i] != 1){
+			i++;
+		}
+		ans *= i;
+		cout << ans << "\n";
+	}
+}
