@@ -1,0 +1,33 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+int main(){
+	int n, m;
+	cin >> n >> m;
+	map<string, bool> A, B;
+	for (int i = 0; i < n; i++){
+		string x;
+		cin >> x;
+		A[x] = true;
+	}
+	for (int i = 0; i < m; i++){
+		string x;
+		cin >> x;
+		B[x] = true;
+	}
+	int cnt = 0;
+	for (auto x : B){
+		if(A.count(x.first)) cnt++;
+	}
+	n = A.size() - cnt;
+	m = B.size() - cnt;
+	if (cnt % 2 == 1){
+		if (n >= m) cout << "YES";
+		else cout << "NO";
+	}
+	else if (n > m) cout << "YES";
+	else cout << "NO";
+}
