@@ -1,0 +1,36 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+
+struct xe{
+	int a, b, id;
+	long long c = 0;
+};
+void swap(struct xe *x, struct xe *y){
+	struct xe k = *x;
+	*x = *y;
+	*y = k;
+}
+int main(){
+	int n;
+	cin >> n;
+	struct xe p[n];
+	for (int i = 0; i < n; i++) p[i].id = i + 1;
+	for (int i = 0; i < n; i++) cin >> p[i].a;
+	for (int i = 0; i < n; i++) {
+		cin >> p[i].b;
+		for (int j = 0; j < i; j++){
+			if(p[j].b*p[i].a > p[j].a*p[i].b) swap(&p[i], &p[j]);
+		}
+	}
+	p[0].c = p[0].b;
+	long long ans = p[0].c*p[0].a;
+	for (int i = 1; i < n; i++){
+		p[i].c = p[i - 1].c + p[i].b;
+		ans = p[i].a * p[i].c + ans;
+	}
+	cout << ans << "\n";
+	for (int i = 0; i < n; i++){
+		cout << p[i].id << " ";
+	}
+}
