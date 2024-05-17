@@ -1,0 +1,27 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+int main(){
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int n, s, cnt = 0;
+    cin >> n >> s;
+    int a[n];
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    sort(a, a + n);
+    if (s > 1e4)
+    {
+        cnt = (s - 1e4 + a[n - 1] - 1) / a[n - 1];
+        s -= cnt * a[n - 1];
+    }
+    vector<int> dp(10001, 1e9 + 7);
+    dp[0] = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = a[i]; j <= s; j++)
+            dp[j] = min(dp[j], dp[j - a[i]] + 1);
+    cout << cnt + dp[s];
+}
