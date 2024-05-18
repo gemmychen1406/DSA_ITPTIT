@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+	int t;
+	cin >> t;
+	while(t--){
+		int n;
+		cin >>n;
+		int a[n], al[n], bo[n];
+		for(int i= 0;i < n; i++){
+			cin >> a[i];
+			al[0] = a[0];
+			if (i > 0) al[i] = al[i - 1] + a[i];
+		}
+		bo[0] = a[n - 1];
+		int h = 1;
+		for (int i = n - 2; i >= 0; i--){
+			bo[h] = bo[h - 1] + a[i];
+			h++;
+		}
+		int cnt = 0;
+		int j = 0, i = 0;
+		while(i < n && j < n){
+			if(i + j + 2 > n) break;
+			if (al[i] < bo[j]) i++;
+			else if (al[i] > bo[j]) j++;
+			else {
+				cnt = max(cnt, i + j + 2);
+				i++; j++;
+			}
+		}
+		cout << cnt << "\n";
+	}
+}
