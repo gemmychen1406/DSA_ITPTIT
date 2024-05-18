@@ -1,0 +1,45 @@
+// hàm làm tròn viết pow(10,n) không nhận, chỉ nhận 1e7 :>
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+#include <algorithm>
+using namespace std;
+struct sdt {
+	int x, y, k;
+	double r;
+};
+void swap(struct sdt *x, struct sdt *y){
+	struct sdt k = *x;
+	*x = *y;
+	*y = k;
+}
+double tron7(double number){
+	return round(number * 1e7) / 1e7; 
+}
+int main(){
+	int n, s;
+	cin >> n >> s;
+	struct sdt a[n];
+	for (int i = 0; i < n; i++){
+		cin >> a[i].x >> a[i].y >> a[i].k;
+		a[i].r = sqrt(a[i].x * a[i].x + a[i].y * a[i].y);
+		for (int j = 0; j < i; j++){
+			if (a[i].r < a[j].r) swap(&a[i], &a[j]);
+		}
+	}
+	int i = 0;
+	double rd = 0;
+	while(s < 1000000){
+		if (i >= n) break;
+		s += a[i].k;
+		rd = a[i].r;
+		i++;
+	}
+	if (s < 1000000){
+		cout << -1;
+	}
+	else {
+		cout << fixed << setprecision(7) << tron7(rd);
+	}
+}
