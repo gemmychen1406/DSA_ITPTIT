@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main(){
+	int t;
+	cin >> t;
+	while(t--){
+		int ca, cb, ma, mb;
+		cin >> ca >> cb >> ma >> mb;
+		if (ma == 0 && mb == 0){
+			cout << 0 << "\n";
+			continue;
+		}
+		else if (ma == 0){
+			cout << min(mb, cb) << "\n";
+			continue;
+		}
+		else if (mb == 0){
+			cout << min(ma, ca) << "\n";
+			continue;
+		}
+		else if (ca == cb){
+			cout << ca + cb << "\n";
+			continue;			
+		}
+		else if (ca < cb) swap(ca, cb), swap(ma, mb);
+		ma = min(ma, (ca + cb)/(cb + 1));
+		cout << min(ca, ma * (1 + cb)) + cb << "\n";
+	}
+}
