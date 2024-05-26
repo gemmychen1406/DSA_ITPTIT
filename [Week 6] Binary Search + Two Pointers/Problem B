@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+bool check(const vector<int>& a, int n, int k, int m) {
+    int ret = 0;
+    for (int i = n / 2; i < n; ++i) {
+        if (a[i] < m) {
+            ret += (m - a[i]);
+            if (ret > k) return false;
+        }
+    }
+    return ret <= k;
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k; 
+    vector<int> a(n);
+    for (int i = 0; i < n; ++i) cin >> a[i]; 
+    sort(a.begin(), a.end()); 
+    int l = a[n / 2], r = a[n / 2] + k;
+    int res = l;
+
+    while (l <= r) {
+        int m = l + (r - l) / 2;
+        if (check(a, n, k, m)) {
+            res = m;
+            l = m + 1; 
+        } else 
+            r = m - 1; 
+    }
+
+    cout << res << endl; 
+    return 0;
+}
