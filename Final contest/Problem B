@@ -1,0 +1,61 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+#define int long long
+const int MOD = 1000000007;
+const int MAXN = 1000000;
+
+vector <bool> b(MAXN + 1, true);
+vector <int> dp(MAXN + 1, 0);
+vector <int> dp2(MAXN + 1, 0);
+vector <int> primes;
+void sang(){
+	b[0] = b[1] = false;
+	for (int i = 2; i * i <= MAXN; i++){
+		if (b[i]){
+			for (int j = i * i; j <= MAXN; j+= i) b[j] = false;
+		}
+	}
+	for(int i = 2; i <= MAXN; ++i) {
+        if(b[i])
+            primes.push_back(i);
+    }
+    
+    int x = 1;
+    for(int i = 2; i <= MAXN; i++) {
+        if(b[i]) {
+            dp[i] = (dp[i - 1] + (x * i) % MOD) % MOD;
+            dp2[i] = (dp2[i - 1] + i) % MOD;
+            x++;
+        } else {
+            dp[i] = dp[i - 1];
+            dp2[i] = dp2[i - 1];
+        }
+    }
+}
+
+signed main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	sang();
+	int t;
+	cin >> t;
+	while(t--){
+		int l, r;
+		cin >> l >> r;
+		if (l > r) swap(l, r);
+		
+		int it = lower_bound(primes.begin(), primes.end(), l) - primes.begin();
+    	int x = (l > 1 && b[l]) ? l - 1 : l;
+    
+    	int sum = (dp[r] - dp[x] + MOD) % MOD;
+   	 	int prime_sum_diff = (dp2[r] - dp2[x] + MOD) % MOD;
+    	sum = (sum - it * prime_sum_diff % MOD + MOD) % MOD;
+		cout << sum << "\n";
+	}
+	return 0;
+}
+
