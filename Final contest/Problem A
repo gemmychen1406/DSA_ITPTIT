@@ -1,0 +1,27 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+ 
+signed main(){
+	string s;
+	int q;
+	cin >> s >> q;
+	int n = s.size();
+	int a[n/2 + 1] = {};
+	while(q--){
+		int x;
+		cin >> x;
+		 if (x > n / 2)
+            x = n - x + 1;
+        a[x - 1]++;
+	}
+	int reverse_nb = 0;
+	for (int i = 0; i < n / 2; i++){
+        reverse_nb += a[i];
+        if (reverse_nb & 1)
+            swap(s[i], s[n - (i + 1)]);
+    }
+    cout << s;
+  	return 0;
+}
